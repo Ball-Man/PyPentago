@@ -7,6 +7,8 @@ BLACK = 2
 CLOCKWISE = True
 COUNTCLOCKWISE = False
 
+SECTION_SIZE = 3
+
 class Pentago:
     def __init__(self):
         self.matrix = []
@@ -22,8 +24,8 @@ class Pentago:
 
     def rotate(self, section, verse):
         result = copy.deepcopy(self.matrix)
-        for i in range(len(self.matrix) // 2):
-            for j in range(len(self.matrix[i]) // 2):
-                result[i][j] = self.matrix[len(self.matrix[i]) // 2 - 1 - j][i]
+        for i in range(section[0] * SECTION_SIZE, section[0] * SECTION_SIZE + SECTION_SIZE):
+            for j in range(section[1] * SECTION_SIZE, section[1] * SECTION_SIZE + SECTION_SIZE):
+                result[i][j] = self.matrix[SECTION_SIZE - 1 - j][i]
 
         self.matrix = result
