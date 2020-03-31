@@ -26,6 +26,10 @@ class Pentago:
         result = copy.deepcopy(self.matrix)
         for i in range(section[0] * SECTION_SIZE, section[0] * SECTION_SIZE + SECTION_SIZE):
             for j in range(section[1] * SECTION_SIZE, section[1] * SECTION_SIZE + SECTION_SIZE):
-                result[i][j] = self.matrix[SECTION_SIZE - 1 - j][i]
+                if verse == CLOCKWISE:
+                    result[i][j] = self.matrix[SECTION_SIZE - 1 - j][i]
+                elif verse == COUNTCLOCKWISE:
+                    result[i][j] = self.matrix[j][SECTION_SIZE - 1 - i]
+
 
         self.matrix = result
