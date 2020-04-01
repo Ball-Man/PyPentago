@@ -20,7 +20,13 @@ def test():
     game.rotate((1, 1), pentago.COUNTCLOCKWISE)
     #print_matrix(game.matrix)
 
+    # Assert on rotation
     assert(game.place(pentago.WHITE, (0, 0)) == False)
+
+    for i in range(6):
+        game.place(pentago.WHITE, (0, i))
+    # Assert on horizontal winning
+    assert(game.status() == pentago.WHITE)
 
 if __name__ == '__main__':
     test()

@@ -4,6 +4,7 @@ import copy
 BLANK = 0
 WHITE = 1
 BLACK = 2
+DRAW = 3
 CLOCKWISE = True
 COUNTCLOCKWISE = False
 
@@ -45,5 +46,43 @@ class Pentago:
                 elif verse == COUNTCLOCKWISE:
                     result[i][j] = self.matrix[j][SECTION_SIZE - 1 - i]
 
-
         self.matrix = result
+
+    def full(self):
+        return False
+
+    def status(self):
+        winning = []
+        seq_color = BLANK
+        counter = 0
+
+        # Check rows
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                if self.matrix[i][j] != seq_color:
+                    counter = 0
+
+                if self.matrix[i][j] == BLANK:
+                    counter = 0
+                    seq_color = BLANK
+                elif self.matrix[i][j] == WHITE or self.matrix[i][j] == BLACK:
+                    seq_color = self.matrix[i][j]
+                    counter += 1
+
+                if counter == 5:
+                    winning.append(seq_color)
+
+        # Check if for doublewin (draw)
+        cur_color = BLANK
+        for x in winning:
+            if x != cur_color and cur_color != BLANK:
+                return DRAW
+            cur_color = x
+
+        # Check for winner
+        if cur_color != BLANK:
+            return cur_color
+        elif winning == [] and self.full():
+            return DRAW
+        elif winning == []:
+            return BLANK
