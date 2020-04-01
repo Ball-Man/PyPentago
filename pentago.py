@@ -59,24 +59,44 @@ class Pentago:
 
     def status(self):
         winning = []
-        seq_color = BLANK
-        counter = 0
 
         # Check rows
-        for i in range(len(self.matrix)):
-            for j in range(len(self.matrix[i])):
-                if self.matrix[i][j] != seq_color:
+        seq_color = BLANK
+        counter = 0
+        for row in self.matrix:
+            for cell in row:
+                if cell != seq_color:
                     counter = 0
 
-                if self.matrix[i][j] == BLANK:
+                if cell == BLANK:
                     counter = 0
                     seq_color = BLANK
-                elif self.matrix[i][j] == WHITE or self.matrix[i][j] == BLACK:
-                    seq_color = self.matrix[i][j]
+                elif cell == WHITE or cell == BLACK:
+                    seq_color = cell
                     counter += 1
 
                 if counter == 5:
                     winning.append(seq_color)
+
+        # Check columns
+        seq_color = BLANK
+        for i in range(MATRIX_SIZE):
+            for j in range(MATRIX_SIZE):
+                cell = self.matrix[j][i]
+
+                if cell != seq_color:
+                    counter = 0
+
+                if cell == BLANK:
+                    counter = 0
+                    seq_color = BLANK
+                elif cell == WHITE or cell == BLACK:
+                    seq_color = cell
+                    counter += 1
+
+                if counter == 5:
+                    winning.append(seq_color)
+
 
         # Check if for doublewin (draw)
         cur_color = BLANK
