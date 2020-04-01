@@ -8,6 +8,7 @@ DRAW = 3
 CLOCKWISE = True
 COUNTCLOCKWISE = False
 
+MATRIX_SIZE = 6
 SECTION_SIZE = 3
 
 class Pentago:
@@ -16,7 +17,8 @@ class Pentago:
     def __init__(self):
         """ Contruct a new pentago game model. """
         self.matrix = []
-        for i in range(6):
+        self.placed_pawns = 0
+        for i in range(MATRIX_SIZE):
             self.matrix.append([BLANK, BLANK, BLANK, BLANK, BLANK, BLANK])
 
     def place(self, color, point):
@@ -30,6 +32,7 @@ class Pentago:
             return False
 
         self.matrix[point[0]][point[1]] = color
+        self.placed_pawns += 1
         return True
 
     def rotate(self, section, verse):
@@ -49,6 +52,9 @@ class Pentago:
         self.matrix = result
 
     def full(self):
+        """ Check if the matrix is full(True of False). """
+        if self.placed_pawns == MATRIX_SIZE ** 2:
+            return True
         return False
 
     def status(self):

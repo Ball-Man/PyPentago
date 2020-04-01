@@ -28,5 +28,14 @@ def test():
     # Assert on horizontal winning
     assert(game.status() == pentago.WHITE)
 
+    for i in range(1, 6):
+        for j in range(6):
+            game.place(pentago.BLACK, (i, j))
+    # Assert on content
+    assert(game.full())
+    # Assert on game status(draw on doublewin)
+    assert(game.status() == pentago.DRAW)
+    print_matrix(game.matrix)
+
 if __name__ == '__main__':
     test()
