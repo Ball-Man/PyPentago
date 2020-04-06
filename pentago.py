@@ -58,6 +58,13 @@ class Pentago:
         return False
 
     def status(self):
+        """ Return the current game status
+
+        return BLACK if the black player won,
+               WHITE if the white player won,
+               DRAW if the game is over but noone won,
+               BLANK if the game isn't over(no one won yet).
+        """
         winning = []
 
         # Check rows
@@ -101,16 +108,21 @@ class Pentago:
         LEFT_DIAG = 0
         RIGHT_DIAG = 1
         DIAG_LEN = 2
+        # Metadata matrix, used calculate diagonals in the game
         diag_mat = [[[1, 1] for x in range(MATRIX_SIZE)] for x in range(MATRIX_SIZE)]
         for i in range(MATRIX_SIZE):
             for j in range(MATRIX_SIZE):
                 cell = self.matrix[i][j]
+
+                # Update left diagonal metadata
                 if i != 0 and j != 0 and cell != BLANK and self.matrix[i - 1][j - 1] == cell:
                     diag_mat[i][j][LEFT_DIAG] += diag_mat[i - 1][j - 1][LEFT_DIAG]
 
+                # Update right diangonal metadata
                 if i != MATRIX_SIZE - 1 and j != MATRIX_SIZE - 1 and cell != BLANK and self.matrix[i - 1][j + 1] == cell:
                     diag_mat[i][j][RIGHT_DIAG] += diag_mat[i - 1][j + 1][RIGHT_DIAG]
 
+                # Check if someone won
                 for k in range(DIAG_LEN):
                     if diag_mat[i][j][k] == 5:
                         winning.append(cell)
