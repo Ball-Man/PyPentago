@@ -39,7 +39,7 @@ def test():
     game = pentago.Pentago()
     # Assert on game not over
     assert(game.status() == pentago.BLANK)
-    
+
     for i in range(6):
         game.place(pentago.WHITE, (i, 0))
     # Assert on vertical winning
@@ -50,6 +50,15 @@ def test():
     # Assert on game status(draw on doublewin)
     assert(game.status() == pentago.DRAW)
 
+    game = pentago.Pentago()
+    for j in range(5):
+        game.place(pentago.BLACK, (j, j))
+    assert(game.status() == pentago.BLACK)
+
+    game = pentago.Pentago()
+    for j in range(5):
+        game.place(pentago.BLACK, (j, pentago.MATRIX_SIZE - 1 - j))
+    assert(game.status() == pentago.BLACK)
 
 if __name__ == '__main__':
     test()

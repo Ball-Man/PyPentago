@@ -97,6 +97,23 @@ class Pentago:
                 if counter == 5:
                     winning.append(seq_color)
 
+        # Check Diagonals
+        LEFT_DIAG = 0
+        RIGHT_DIAG = 1
+        DIAG_LEN = 2
+        diag_mat = [[[1, 1] for x in range(MATRIX_SIZE)] for x in range(MATRIX_SIZE)]
+        for i in range(MATRIX_SIZE):
+            for j in range(MATRIX_SIZE):
+                cell = self.matrix[i][j]
+                if i != 0 and j != 0 and cell != BLANK and self.matrix[i - 1][j - 1] == cell:
+                    diag_mat[i][j][LEFT_DIAG] += diag_mat[i - 1][j - 1][LEFT_DIAG]
+
+                if i != MATRIX_SIZE - 1 and j != MATRIX_SIZE - 1 and cell != BLANK and self.matrix[i - 1][j + 1] == cell:
+                    diag_mat[i][j][RIGHT_DIAG] += diag_mat[i - 1][j + 1][RIGHT_DIAG]
+
+                for k in range(DIAG_LEN):
+                    if diag_mat[i][j][k] == 5:
+                        winning.append(cell)
 
         # Check if for doublewin (draw)
         cur_color = BLANK
