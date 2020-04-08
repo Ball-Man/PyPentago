@@ -35,3 +35,7 @@ class TurnController:
         self._cur_turn = self._turns[self._turns.index(self._cur_turn) - 1]
 
         return self._game.status()
+
+    @property
+    def cur_turn(self):
+        return self._cur_turn
