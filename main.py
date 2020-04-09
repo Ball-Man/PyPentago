@@ -34,16 +34,16 @@ def clear():
 
 def hor_line():
     output = ''
-    for i in range(2 + pentago.MATRIX_SIZE * 2 + 1):
+    for i in range(2 + 2 + pentago.MATRIX_SIZE * 2 + 1):
         output += HOR_SEP
     output += '\n'
     return output
 
 def section_hor_line():
-    output = '|'
-    for i in range(1 + pentago.MATRIX_SIZE * 2):
+    output = VERT_SEP
+    for i in range(1 + 2 + pentago.MATRIX_SIZE * 2):
         output += HOR_SEP
-    output += '|\n'
+    output += VERT_SEP + '\n'
     return output
 
 def print_matrix(matrix):
@@ -51,8 +51,7 @@ def print_matrix(matrix):
 
     output += hor_line()
 
-    i = 0
-    while i < pentago.MATRIX_SIZE:
+    for i in range(pentago.MATRIX_SIZE):
         output += VERT_SEP + SPACE
 
         for j in range(len(matrix[i])):
@@ -60,6 +59,9 @@ def print_matrix(matrix):
 
             output += (colored(PAWN, COLORS[cell])
                        if cell != pentago.BLANK else ' ') + ' '
+
+            if (j + 1) % pentago.SECTION_SIZE == 0 and j + 1 != pentago.MATRIX_SIZE:
+                output += VERT_SEP + SPACE
 
         output += VERT_SEP + '\n'
 
