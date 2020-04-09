@@ -1,9 +1,10 @@
 import model.turn_controller as turn_controller
 import model.pentago as pentago
 
-from os import system, name as sysname
+from os import system, path, name as sysname
 from termcolor import colored
 
+TITLE_FILENAME = 'files/title.txt'
 
 CMD = '>> '
 QUIT_CMD = 'quit'
@@ -84,8 +85,14 @@ def main():
         for j in range(6):
             game.do_turn((i, j), (0, 0), pentago.CLOCKWISE)
 
+    # Pentago title
+    pentago_text = open(path.join(path.dirname(__file__), TITLE_FILENAME)).read()
+
     # Game loop
     while inp != QUIT_CMD:
+
+        print(pentago_text)
+
         print_matrix(game.game_matrix)
         inp = read_input()
         clear()
