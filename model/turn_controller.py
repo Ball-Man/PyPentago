@@ -39,3 +39,7 @@ class TurnController:
     @property
     def cur_turn(self):
         return self._cur_turn
+
+    @property
+    def game_matrix(self):
+        return self._game.matrix
