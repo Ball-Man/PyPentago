@@ -13,8 +13,8 @@ NEW_GAME = 'new_game'
 hor_test = '─/┼/╬/═/║'
 
 PAWN = 'O'
-VERT_SEP = '|'
-HOR_SEP = '='
+VERT_SEP = '║'
+HOR_SEP = '═'
 SPACE = ' '
 
 
@@ -67,7 +67,8 @@ def print_matrix(matrix):
         output += VERT_SEP + '\n'
 
         if (i + 1) % pentago.SECTION_SIZE == 0 and i + 1 != pentago.MATRIX_SIZE:
-            output += section_hor_line()
+            #output += section_hor_line()
+            output += '║═══════╬═══════║\n' # Hardcoded Way
 
         i += 1
 
