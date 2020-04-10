@@ -45,9 +45,9 @@ class Pentago:
         for i in range(section[0] * SECTION_SIZE, section[0] * SECTION_SIZE + SECTION_SIZE):
             for j in range(section[1] * SECTION_SIZE, section[1] * SECTION_SIZE + SECTION_SIZE):
                 if verse == CLOCKWISE:
-                    result[i][j] = self.matrix[SECTION_SIZE - 1 - j][i]
+                    result[i][j] = self.matrix[SECTION_SIZE - 1 - int(j % SECTION_SIZE) + section[0] * SECTION_SIZE][int(i % SECTION_SIZE) + section[1] * SECTION_SIZE]
                 elif verse == COUNTCLOCKWISE:
-                    result[i][j] = self.matrix[j][SECTION_SIZE - 1 - i]
+                    result[i][j] = self.matrix[int(j % SECTION_SIZE) + section[0] * SECTION_SIZE][SECTION_SIZE - 1 - int(i % SECTION_SIZE) + section[1] * SECTION_SIZE]
 
         self.matrix = result
 
