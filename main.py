@@ -1,6 +1,7 @@
 import model.turn_controller as turn_controller
 import model.pentago as pentago
 import enum
+import re
 
 from os import system, path, name as sysname
 from termcolor import colored
@@ -9,6 +10,7 @@ from termcolor import colored
 TITLE_FILENAME = 'files/title.txt'
 
 CMD = '>> '
+INPUT_ERROR = 'Please follow the syntax as shown in the line above'
 QUIT_CMD = 'quit'
 NEW_GAME = 'new_game'
 
@@ -45,6 +47,11 @@ WINNER_DICT = {
     pentago.DRAW: "It's a draw"
 }
 
+RE_DICT = {
+    GameState.PLACE: '([a-f])\s*([1-6])|(quit)',
+    GameState.ROTATE: '([1-4])\s*(cw|cc)|(quit)'
+}
+
 # Variables
 place_pos = (0, 0)
 
@@ -53,25 +60,37 @@ def read_input():
     return inp.strip().lower()
 
 
+def parse_input(inp, state):
+    res = re.findall(RE_DICT[state], inp)
+    if res:
+        return res[0]
+    else:
+        return tuple()
+
+
 def compute_input(game, state, inp):
+    # Check syntax
+    parsed_inp = parse_input(inp, state)
+    while not parsed_inp:
+        print(INPUT_ERROR)
+        parsed_inp = parse_input(read_input(), state)
+
     # Quit if requested
-    if inp == 'quit':
+    if parsed_inp[2] == 'quit':
         return GameState.QUIT
 
     if state == GameState.PLACE:
-        # TODO check syntax
         global place_pos
 
-        place_pos = [ROW_IDS.index(inp[1]), COL_IDS.index(inp[0])]
+        place_pos = [ROW_IDS.index(parsed_inp[1]), COL_IDS.index(parsed_inp[0])]
         return GameState.ROTATE
 
     elif state == GameState.ROTATE:
-        # TODO check syntax
-        index = int(inp[0]) - 1
+        index = int(parsed_inp[0]) - 1
         sections_line = pentago.MATRIX_SIZE / pentago.SECTION_SIZE
         rotate_pos = [int(index / sections_line), int(index % sections_line)]
 
-        verse = ROT_DICT[inp[1:]]
+        verse = ROT_DICT[parsed_inp[1]]
         print(place_pos, rotate_pos, verse)
         game.do_turn(place_pos, rotate_pos, verse)
 
