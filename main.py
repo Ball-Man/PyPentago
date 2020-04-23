@@ -31,11 +31,19 @@ class GameState(enum.Enum):
     PLACE = 0
     ROTATE = 1
     QUIT = 2
+    OVER = 3
 
 STATUS_DICT = {
-        GameState.PLACE: 'Where do you want to place your pawn? (e.g. b5)',
-        GameState.ROTATE: 'What sector do you want to rotate? (e.g. 2cw)'
-       }
+    GameState.PLACE: 'Where do you want to place your pawn? (e.g. b5)',
+    GameState.ROTATE: 'What sector do you want to rotate? (e.g. 2cw)',
+    GameState.OVER: 'The game is over, the winner is: '
+}
+
+WINNER_DICT = {
+    pentago.WHITE: 'the white pawn',
+    pentago.BLACK: 'the black pawn',
+    pentago.DRAW: "It's a draw"
+}
 
 # Variables
 place_pos = (0, 0)
@@ -84,12 +92,14 @@ def hor_line():
     output += '\n'
     return output
 
+
 def section_hor_line():
     output = VERT_SEP
     for i in range(1 + 2 + pentago.MATRIX_SIZE * 2):
         output += HOR_SEP
     output += VERT_SEP + '\n'
     return output
+
 
 def print_matrix(matrix):
     output = ''
@@ -119,8 +129,13 @@ def print_matrix(matrix):
     output += hor_line()
     print(output)
 
-def print_status(state):
-    print(STATUS_DICT[state])
+
+def print_status(state, gamestatus):
+    str = '' if gamestatus == pentago.DRAW else STATUS_DICT[state]
+
+    if state == GameState.OVER:
+        str += WINNER_DICT[gamestatus]
+    print(str)
 
 
 def main():
@@ -145,11 +160,17 @@ def main():
 
         print(pentago_text)
 
+        # Check if someone won
+        gamestatus = game.game.status()
+        if gamestatus != pentago.BLANK:    # Someone is winning
+            state = GameState.OVER
+
         print_matrix(game.game_matrix)
-        print_status(state)
+        print_status(state, gamestatus)
 
         inp = read_input()
         state = compute_input(game, state, inp)
+
         clear()
 
 
