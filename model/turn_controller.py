@@ -43,3 +43,7 @@ class TurnController:
     @property
     def game_matrix(self):
         return self._game.matrix
+
+    @property
+    def game(self):
+        return self._game
