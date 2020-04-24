@@ -46,6 +46,8 @@ STATUS_DICT = {
     GameState.OVER: f'The game is over, the winner is: {WINNER_TOKEN}\nRestart? (y/[n])'
 }
 
+TURN_STRING = "It's the turn of "
+
 WINNER_DICT = {
     pentago.WHITE: 'the white pawn',
     pentago.BLACK: 'the black pawn',
@@ -101,7 +103,7 @@ def compute_input(game, state, inp):
 
         verse = ROT_DICT[parsed_inp[1]]
         print(place_pos, rotate_pos, verse)
-        game.do_turn(place_pos, rotate_pos, verse)
+        succ = game.do_turn(place_pos, rotate_pos, verse)
 
         return GameState.PLACE
 
@@ -137,6 +139,10 @@ def section_hor_line():
         output += HOR_SEP
     output += VERT_SEP + '\n'
     return output
+
+
+def print_turn(game):
+    print(TURN_STRING + WINNER_DICT[game.cur_turn] + '\n')
 
 
 def print_matrix(matrix):
@@ -184,9 +190,11 @@ def main():
     # Pentago model
     game = turn_controller.TurnController()
 
+    """
     for i in range(4):
         for j in range(2):
             game.do_turn((i, j), (1, 1), pentago.CLOCKWISE)
+    """"
 
     state = GameState.PLACE
 
@@ -203,6 +211,7 @@ def main():
         if gamestatus != pentago.BLANK:    # Someone is winning
             state = GameState.OVER
 
+        print_turn(game)
         print_matrix(game.game_matrix)
         print_status(state, gamestatus)
 
