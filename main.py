@@ -108,6 +108,7 @@ def compute_input(game, state, inp):
     elif state == GameState.OVER:
         if parsed_inp:
             if parsed_inp[0] == YES:
+                game.restart()
                 return GameState.PLACE
             elif parsed_inp[0] == NO or parsed_inp[0] == '':
                 return GameState.QUIT
