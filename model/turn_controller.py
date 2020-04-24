@@ -19,9 +19,11 @@ class TurnController:
         the current turn
         `rotate_section` is in the form (row, column)
         `rotate_verse` is CLOCKWISE or COUNTCLOCKWISE
+        Return True if the turn was successful(the pawn could be placed), False
+        else.
         """
         # Place a pawn
-        self._game.place(self._cur_turn, place_point)
+        succ = self._game.place(self._cur_turn, place_point)
 
         # Check if it's already won
         status = self._game.status()
@@ -29,12 +31,13 @@ class TurnController:
             return status
 
         # Rotate
-        self._game.rotate(rotate_section, rotate_verse)
+        if succ:
+            self._game.rotate(rotate_section, rotate_verse)
 
-        # Next turn
-        self._cur_turn = self._turns[self._turns.index(self._cur_turn) - 1]
+            # Next turn
+            self._cur_turn = self._turns[self._turns.index(self._cur_turn) - 1]
 
-        return self._game.status()
+        return succ
 
     def restart(self):
         """Starts a new pentago game, deleting all the progress."""
