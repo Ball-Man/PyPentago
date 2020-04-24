@@ -126,7 +126,7 @@ def clear():
 
 
 def hor_line():
-    output = ''
+    output = 2 * SPACE
     for i in range(2 + 2 + pentago.MATRIX_SIZE * 2 + 1):
         output += HOR_SEP
     output += '\n'
@@ -148,9 +148,14 @@ def print_turn(game):
 def print_matrix(matrix):
     output = ''
 
+    # Column names
+    output += 4 * SPACE + SPACE.join(COL_IDS[:3]) + 3 * SPACE \
+              + SPACE.join(COL_IDS[3:6]) + '\n'
     output += hor_line()
 
     for i in range(pentago.MATRIX_SIZE):
+        # Row names
+        output += ROW_IDS[i] + SPACE
         output += VERT_SEP + SPACE
 
         for j in range(len(matrix[i])):
@@ -166,7 +171,7 @@ def print_matrix(matrix):
 
         if (i + 1) % pentago.SECTION_SIZE == 0 and i + 1 != pentago.MATRIX_SIZE:
             #output += section_hor_line()
-            output += MIDDLE_LINE + '\n' # Hardcoded Way
+            output += SPACE * 2 + MIDDLE_LINE + '\n' # Hardcoded Way
 
         i += 1
 
