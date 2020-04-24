@@ -36,6 +36,10 @@ class TurnController:
 
         return self._game.status()
 
+    def restart(self):
+        """Starts a new pentago game, deleting all the progress."""
+        self._game = pentago.Pentago()
+
     @property
     def cur_turn(self):
         return self._cur_turn
