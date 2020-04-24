@@ -14,6 +14,8 @@ INPUT_ERROR = 'Please follow the syntax as shown in the line above'
 QUIT_CMD = 'quit'
 NEW_GAME = 'new_game'
 
+
+
 hor_test = '─/┼/╬/═/║'
 
 PAWN = 'O'
@@ -35,10 +37,13 @@ class GameState(enum.Enum):
     QUIT = 2
     OVER = 3
 
+WINNER_TOKEN = '%winner%'
+YES = 'y'
+NO = 'n'
 STATUS_DICT = {
     GameState.PLACE: 'Where do you want to place your pawn? (e.g. b5)',
     GameState.ROTATE: 'What sector do you want to rotate? (e.g. 2cw)',
-    GameState.OVER: 'The game is over, the winner is: '
+    GameState.OVER: f'The game is over, the winner is: {WINNER_TOKEN}\nRestart? (y/[n])'
 }
 
 WINNER_DICT = {
@@ -49,7 +54,8 @@ WINNER_DICT = {
 
 RE_DICT = {
     GameState.PLACE: '([a-f])\s*([1-6])|(quit)',
-    GameState.ROTATE: '([1-4])\s*(cw|cc)|(quit)'
+    GameState.ROTATE: '([1-4])\s*(cw|cc)|(quit)',
+    GameState.OVER: '(y|n|)'
 }
 
 # Variables
@@ -63,7 +69,10 @@ def read_input():
 def parse_input(inp, state):
     res = re.findall(RE_DICT[state], inp)
     if res:
-        return res[0]
+        if type(res[0]) is tuple:
+            return res[0]
+        else:
+            return tuple(res[0])
     else:
         return tuple()
 
@@ -71,12 +80,12 @@ def parse_input(inp, state):
 def compute_input(game, state, inp):
     # Check syntax
     parsed_inp = parse_input(inp, state)
-    while not parsed_inp:
+    while not state == GameState.OVER and not parsed_inp:
         print(INPUT_ERROR)
         parsed_inp = parse_input(read_input(), state)
 
     # Quit if requested
-    if parsed_inp[2] == 'quit':
+    if QUIT_CMD in parsed_inp:
         return GameState.QUIT
 
     if state == GameState.PLACE:
@@ -95,6 +104,15 @@ def compute_input(game, state, inp):
         game.do_turn(place_pos, rotate_pos, verse)
 
         return GameState.PLACE
+
+    elif state == GameState.OVER:
+        if parsed_inp:
+            if parsed_inp[0] == YES:
+                return GameState.PLACE
+            elif parsed_inp[0] == NO or parsed_inp[0] == '':
+                return GameState.QUIT
+        else:
+            return GameState.QUIT
 
 
 def clear():
@@ -153,7 +171,7 @@ def print_status(state, gamestatus):
     str = '' if gamestatus == pentago.DRAW else STATUS_DICT[state]
 
     if state == GameState.OVER:
-        str += WINNER_DICT[gamestatus]
+        str = str.replace(WINNER_TOKEN, WINNER_DICT[gamestatus])
     print(str)
 
 
@@ -164,11 +182,11 @@ def main():
 
     # Pentago model
     game = turn_controller.TurnController()
-    """
-    for i in range(6):
-        for j in range(6):
-            game.do_turn((i, j), (0, 0), pentago.CLOCKWISE)
-    """
+
+    for i in range(4):
+        for j in range(2):
+            game.do_turn((i, j), (1, 1), pentago.CLOCKWISE)
+
     state = GameState.PLACE
 
     # Pentago title
