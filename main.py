@@ -194,7 +194,7 @@ def main():
     for i in range(4):
         for j in range(2):
             game.do_turn((i, j), (1, 1), pentago.CLOCKWISE)
-    """"
+    """
 
     state = GameState.PLACE
 
