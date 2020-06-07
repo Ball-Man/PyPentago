@@ -3,7 +3,7 @@ import model.pentago as pentago
 import enum
 import re
 
-from os import system, path, name as sysname
+from os import sys, system, path, name as sysname
 from termcolor import colored
 
 # Constants
@@ -62,6 +62,23 @@ RE_DICT = {
 
 # Variables
 place_pos = (0, 0)
+
+
+def find_data_file(filename):
+    """Get the path to a file on the same folder of this file.
+
+    Utility method for frozen apps. __file__ isn't defined in frozen
+    programs.
+    """
+    if getattr(sys, 'frozen', False):
+        # The application is frozen
+        datadir = path.dirname(sys.executable)
+    else:
+        # The application is not frozen
+        # Change this bit to match where you store your data files:
+        datadir = path.dirname(__file__)
+    return path.join(datadir, filename)
+
 
 def read_input():
     inp = input(CMD)
@@ -204,7 +221,7 @@ def main():
     state = GameState.PLACE
 
     # Pentago title
-    pentago_text = open(path.join(path.dirname(__file__), TITLE_FILENAME)).read()
+    pentago_text = open(find_data_file(TITLE_FILENAME)).read()
 
     # Game loop
     while state != GameState.QUIT:
