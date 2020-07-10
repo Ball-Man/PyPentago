@@ -1,9 +1,7 @@
-import pypentago.pentago as pentago
+from context import *
+from pypentago import pentago
+from helpers import print_matrix
 
-def print_matrix(matrix):
-    for lst in matrix:
-        print(lst)
-    print()
 
 def test():
     game = pentago.Pentago()
