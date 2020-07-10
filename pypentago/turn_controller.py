@@ -1,4 +1,4 @@
-import model.pentago as pentago
+import pypentago.pentago as pentago
 
 
 class TurnController:
@@ -28,7 +28,7 @@ class TurnController:
         # Check if it's already won
         status = self._game.status()
         if status in self._turns:
-            return status
+            return succ
 
         # Rotate
         if succ:

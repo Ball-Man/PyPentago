@@ -1,5 +1,5 @@
-import model.turn_controller as turn_controller
-import model.pentago as pentago
+import pypentago.turn_controller as turn_controller
+import pypentago.pentago as pentago
 
 def test():
     controller = turn_controller.TurnController()

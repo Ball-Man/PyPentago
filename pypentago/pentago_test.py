@@ -1,4 +1,4 @@
-import model.pentago as pentago
+import pypentago.pentago as pentago
 
 def print_matrix(matrix):
     for lst in matrix:
